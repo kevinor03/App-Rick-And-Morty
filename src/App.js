@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Routes, Route, useLocation } from "react-router-dom"
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { removeFavorite } from './redux/Actions.js';
 
 import Cards from './components/Cards.jsx';
 import Nav from './components/Nav.jsx';
@@ -13,6 +15,7 @@ import Favorites from './views/Favorite.jsx';
 export default function App() {
    const location = useLocation();
    const [characters, setCharacters] = useState([]);
+   const dispatch = useDispatch()
 
    function searchHandler(id) {
       axios(`https://rickandmortyapi.com/api/character/${id}`).then(({ data }) => {
@@ -26,6 +29,9 @@ export default function App() {
 
    function closeHandler(id) {
       let filtered = characters.filter((character) => character.id !== Number(id))
+
+      dispatch(removeFavorite(id))
+
       setCharacters(filtered);
    }
 

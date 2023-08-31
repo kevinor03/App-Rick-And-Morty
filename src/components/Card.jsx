@@ -6,41 +6,48 @@ import { useEffect, useState } from "react";
 function Card(props) {
    const navigate = useNavigate()
    const { character, onClose, favorites, addFavorite, removeFavorite } = props
-   const {name, status, id} = character
+   const { name, gender, id } = character
 
+   const [closeBtn, setCloseBtn] = useState(true)
    const [fav, setFav] = useState(false)
 
-   function navigateHandler() {
-      navigate(`/detail/${character.id}`);
-   }
+   useEffect(() => {
+      if (!onClose) {
+         setCloseBtn(false)
+      }
+   }, [])
 
    useEffect(() => {
       favorites.forEach((fav) => {
-         if (fav.id === character.id) {
+         if (fav.id === id) {
             setFav(true)
          }
       })
    }, [favorites]);
+
+   function navigateHandler() {
+      navigate(`/detail/${character.id}`);
+   }
 
    function handleFavorite(character) {
       if (!fav) {
          addFavorite(character)
          setFav(true)
       } else {
-         removeFavorite(character.id)
+         removeFavorite(character)
          setFav(false)
       }
    }
 
    return (
       <div>
+         {closeBtn && (<button onClick={() => { onClose(id) }}>X</button>)}
 
-         <button onClick={() => { onClose(id) }}>X</button>
          <h2>name: {name}</h2>
-         <h2>status: {status}</h2>
+         <h2>gender: {gender}</h2>
          {
             fav ? (
-               <button onClick={() => {handleFavorite(id)}}>❤️</button>
+               <button onClick={() => { handleFavorite(id) }}>❤️</button>
             ) : (
                <button onClick={() => {handleFavorite(character)}}>🤍</button>
             )

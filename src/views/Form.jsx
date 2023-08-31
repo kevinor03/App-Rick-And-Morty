@@ -1,17 +1,20 @@
-import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom";
+import { useState } from "react"
 
 function validar(input) {
     let errors = {}
     let veri = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let num = /\d/;
 
+    if (!input.email) {
+        errors.email = "hace falta un email"
+    }
     if (!veri.test(input.email)) {
         errors.email = "email incorrecto"
     }
     if (input.email.length >= 35) {
         errors.email = "el email no puede tener mas de 35 caracteres"
     }
+
     if (!num.test(input.password)) {
         errors.password = "el password no tiene numeros"
     }
@@ -22,12 +25,7 @@ function validar(input) {
     return errors;
 }
 
-export default function Form(login) {
-
-    const navigate = useNavigate();
-    const [access, setAccess] = useState(false);
-    const EMAIL = 'kevin@gmail.com';
-    const PASSWORD = 'password4';
+export default function Form({ login }) {
 
     const [userData, setUserData] = useState({
         email: "",
@@ -38,18 +36,6 @@ export default function Form(login) {
         email: "Ingrese su email",
         password: "Ingrese su password"
     })
-
-    function login(userData) {
-        if (userData.password === PASSWORD && userData.email === EMAIL) {
-            setAccess(true);
-            navigate('/home');
-        }
-    }
-
-    useEffect(() => {
-        !access && navigate('/');
-        //esLint-disable-next-Line
-    }, [access]);
 
     function handlerChange(event) {
         setUserData({
@@ -63,8 +49,7 @@ export default function Form(login) {
         }))
     }
 
-    // mensaje de "bienvenida"
-    function submitHandler(event) {
+    function handlerSubmit(event) {
         event.preventDefault()
         login(userData)
     }
@@ -84,7 +69,7 @@ export default function Form(login) {
     return (
         <div>
             <span>Rick and Morty App</span>
-            <form onSubmit={submitHandler}>
+            <form onSubmit={handlerSubmit}>
                 <div>
                     <label>Email</label>
                     <input type="text"
@@ -92,7 +77,7 @@ export default function Form(login) {
                         value={userData.email}
                         name="email"
                         onChange={handlerChange} />
-                    <span>{errors.email}</span>
+                    {<span>{errors.email}</span> && errors.email}
                 </div>
 
                 <div>

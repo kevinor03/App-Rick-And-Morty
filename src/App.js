@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Routes, Route, useLocation } from "react-router-dom"
+import { useState, useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom"
 import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { removeFavorite } from './redux/Actions.js';
@@ -15,14 +15,35 @@ import Favorites from './views/Favorite.jsx';
 export default function App() {
    const location = useLocation();
    const [characters, setCharacters] = useState([]);
+   const [access, setAccess] = useState(false);
+
    const dispatch = useDispatch()
+   const navigate = useNavigate();
+
+   const EMAIL = 'kevin@gmail.com';
+   const PASSWORD = 'password4';
+
+   function login(userData) {
+      if (userData.password === PASSWORD && userData.email === EMAIL) {
+         setAccess(true);
+         navigate('/home');
+      }
+   }
+
+   useEffect(() => {
+      !access && navigate('/');
+      //esLint-disable-next-Line
+   }, [access]);
 
    function searchHandler(id) {
+      if (id <= 0 || id > 826) {
+         return window.alert("¡No hay personajes con ese ID!")
+      }
       axios(`https://rickandmortyapi.com/api/character/${id}`).then(({ data }) => {
          if (data.name) {
             setCharacters((oldChars) => [...oldChars, data]);
          } else {
-            return window.alert('¡No hay personajes con este ID!');
+            window.alert("Introduzca un ID de Personaje");
          }
       });
    }
@@ -57,7 +78,7 @@ export default function App() {
          {location.pathname === "/" ? null : <Nav onSearch={searchHandler} randomize={randomHandler} />}
 
          <Routes>
-            <Route path='/' element={<Form />}></Route>
+            <Route path='/' element={<Form login={login} />}></Route>
             <Route path="/home" element={<Cards characters={characters} onClose={closeHandler} />} />
             <Route path="/about" element={<About />} />
             <Route path="/favorites" element={<Favorites />}/>

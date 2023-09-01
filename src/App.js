@@ -23,23 +23,25 @@ export default function App() {
    const EMAIL = 'kevin@gmail.com';
    const PASSWORD = 'password4';
 
+   // access 
    function login(userData) {
       if (userData.password === PASSWORD && userData.email === EMAIL) {
          setAccess(true);
          navigate('/home');
       }
    }
-
+   // access
    useEffect(() => {
       !access && navigate('/');
       //esLint-disable-next-Line
    }, [access]);
-
+   // nav bar
    function searchHandler(id) {
       if (id <= 0 || id > 826) {
          return window.alert("¡No hay personajes con ese ID!")
       }
-      axios(`https://rickandmortyapi.com/api/character/${id}`).then(({ data }) => {
+      axios(`https://rickandmortyapi.com/api/character/${id}`)
+         .then(({ data }) => {
          if (data.name) {
             setCharacters((oldChars) => [...oldChars, data]);
          } else {
@@ -47,7 +49,7 @@ export default function App() {
          }
       });
    }
-
+   // button close
    function closeHandler(id) {
       let filtered = characters.filter((character) => character.id !== Number(id))
 
@@ -55,7 +57,7 @@ export default function App() {
 
       setCharacters(filtered);
    }
-
+   // button random id
    function randomHandler() { 
 
       let rom = []

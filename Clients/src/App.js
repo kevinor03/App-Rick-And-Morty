@@ -15,19 +15,22 @@ import Favorites from './views/Favorite.jsx';
 export default function App() {
    const location = useLocation();
    const [characters, setCharacters] = useState([]);
-   const [access, setAccess] = useState(false);
+   const [access, setAccess] = useState(true);
 
    const dispatch = useDispatch()
    const navigate = useNavigate();
 
-   const EMAIL = 'kevin@gmail.com';
-   const PASSWORD = 'password4';
-
    // access 
-   function login(userData) {
-      if (userData.password === PASSWORD && userData.email === EMAIL) {
-         setAccess(true);
-         navigate('/home');
+   async function login(userData) {
+      try {
+         const { email, password } = userData;
+         const URL = 'http://localhost:3001/rickandmorty/login/';
+         const { data } = await axios(URL + `?email=${email}&password=${password}`)
+         const { access } = data;
+         setAccess(data);
+         access && navigate('/home');
+      } catch (error) {
+         alert(error)
       }
    }
    // access
@@ -36,19 +39,20 @@ export default function App() {
       //esLint-disable-next-Line
    }, [access]);
    // nav bar
-   function searchHandler(id) {
-      if (id <= 0 || id > 826) {
-         return window.alert("¡No hay personajes con ese ID!")
-      }
+   async function searchHandler(id) {
+      try {
+   // if (id <= 0 || id > 826) {
+   //    return window. {
       // https://rickandmortyapi.com/api/character/${id}
-      axios(`http://localhost:3001/rickandmorty/character/${id}`)
-         .then(({ data }) => {
+         const { data } = await axios(`http://localhost:3001/rickandmorty/character/${id}`)
             if (data.name) {
                setCharacters((oldChars) => [...oldChars, data]);
             } else {
-               window.alert("Introduzca un ID de Personaje");
+               throw new Error("Introduzca un ID de Personaje");
             }
-         });
+      } catch (error) {
+         alert(error)
+      }  
    }
    // button close
    function closeHandler(id) {

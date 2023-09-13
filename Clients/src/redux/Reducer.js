@@ -1,21 +1,14 @@
-import { ADD_TO_FAVORITES, REMOVE_FAVORITE, ORDER, FILTER, RESET } from "./Action-types";
+import { ADD_FAVORITES, REMOVE_FAVORITE, ORDER, FILTER, RESET } from "./Action-types";
 
 let firstState = { characters: [], favorites: [], allCharacters: [] }
 
 export default function rootReducer (state = firstState, action) {
     switch(action.type){
-        case ADD_TO_FAVORITES:
-            return {
-                ...state,
-                favorites: [...state.favorites, action.payload],
-                allCharacters: [...state.favorites, action.payload]
-            }
+        case ADD_FAVORITES:
+            return { ...state, favorites: action.payload, allCharacters: action.payload };
 
         case REMOVE_FAVORITE:
-            return {
-                ...state,
-                favorites: state.favorites.filter(characters => characters.id !== Number(action.payload))
-            }
+            return { ...state, favorites: action.payload };
 
         case ORDER:
             let ordenados;

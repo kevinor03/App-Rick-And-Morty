@@ -41,8 +41,6 @@ export default function App() {
    // nav bar
    async function searchHandler(id) {
       try {
-   // if (id <= 0 || id > 826) {
-   //    return window. {
       // https://rickandmortyapi.com/api/character/${id}
          const { data } = await axios(`http://localhost:3001/rickandmorty/character/${id}`)
             if (data.name) {

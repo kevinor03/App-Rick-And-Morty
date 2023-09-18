@@ -68,7 +68,6 @@ export default function Form({ login }) {
 
     return (
         <div>
-            <span>Rick and Morty App</span>
             <form onSubmit={handlerSubmit}>
                 <div>
                     <label>Email</label>
@@ -76,7 +75,7 @@ export default function Form({ login }) {
                         placeholder="correo@gmail.com"
                         value={userData.email}
                         name="email"
-                        onChange={handlerChange} />
+                        onChange={handlerChange} /> <br />
                     {<span>{errors.email}</span> && errors.email}
                 </div>
 
@@ -86,7 +85,7 @@ export default function Form({ login }) {
                         placeholder="password"
                         value={userData.password}
                         name="password"
-                        onChange={handlerChange} />
+                        onChange={handlerChange} /> <br />
                     {<span>{errors.password}</span> && errors.password} 
                 </div>
 

@@ -1,5 +1,5 @@
 // import { connect } from "react-redux";
-import Cards from "../components/Cards";
+import Cards from "../components/Cards/Cards";
 import { useSelector, useDispatch } from "react-redux";
 import { orderFavorite, filterFavorite, resetFavorite } from "../redux/Actions";
 

@@ -4,13 +4,15 @@ import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { removeFavorite } from './redux/Actions.js';
 
-import Cards from './components/Cards.jsx';
+import Cards from './components/Cards/Cards.jsx';
 import Nav from './components/Nav.jsx';
 import About from "./views/About.jsx"
 import Detail from './views/Detail.jsx';
 import Error from './views/ErrorPage.jsx';
 import Form from './views/Form.jsx';
 import Favorites from './views/Favorite.jsx';
+
+import "./App.css"
 
 export default function App() {
    const location = useLocation();
@@ -79,7 +81,7 @@ export default function App() {
 
    return (
       <div className='App'>
-
+         <h1 className={'title'}>App de Rick And Morty</h1>
          {location.pathname === "/" ? null : <Nav onSearch={searchHandler} randomize={randomHandler} />}
 
          <Routes>

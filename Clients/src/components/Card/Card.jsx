@@ -46,7 +46,6 @@ function Card(props) {
          <div className={style.imageContainer}>
             {closeBtn && (<button className={style.closeButton} onClick={() => { onClose(id) }}>X</button>)}
             <img className={style.characterImage} src={character.image} alt={name} onClick={navigateHandler} />
-            <h2 className={style.name}>{name}</h2>
             {
                fav ? (
                   <button onClick={() => { handleFavorite(id) }}>❤️</button>
@@ -56,8 +55,9 @@ function Card(props) {
             }
          </div>
          <div className={style.atributes}>
-            <h2> {gender} </h2>
-            <h2> {species} </h2>
+            <h2>{name}</h2>
+            <h3> {gender} </h3>
+            <h3> {species} </h3>
          </div>
       </div>
    );
